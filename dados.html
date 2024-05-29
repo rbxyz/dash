@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./content/favicon.png" type="image/x-icon">
+    <title>Dados | Dash</title>
+</head>
+<body>
+    <div>
+        <div class="vertical-header">
+            <h1>[Logo]</h1>
+            <nav>
+                <ul>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./dados.html">Inserir dados</a></li>
+                    <li> <a href="https://github.com/rbxyz"><ion-icon class="large-icon icon-1" name="logo-github"></ion-icon></a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content">
+            <h2>DASH</h2>
+            <p>Dashboard de Alocação Dinâmica de Gráficos</p>
+            <div>
+                <label for="campoMensagem">Insira os rótulos separados por vírgulas:</label>
+                <input type="text" id="campoMensagem">
+            </div><br>
+            <div>
+                <label for="campoNumero">Insira os números separados por vírgulas:</label>
+                <input type="text" id="campoNumero">
+            </div>
+            <div>
+                <button id="updateButton">Atualizar Gráfico</button>
+            </div>
+            <div id="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+      
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const inputField = document.getElementById('campoMensagem');
+    const inputNumb = document.getElementById('campoNumero');
+    const updateButton = document.getElementById('updateButton');
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true, // Garante a responsividade
+        maintainAspectRatio: false, 
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    updateButton.addEventListener('click', () => {
+        const newLabels = inputField.value.split(',').map(label => label.trim());
+        const newData = inputNumb.value.split(',').map(Number);
+
+        if (newLabels.length === newData.length) {
+            chart.data.labels = newLabels;
+            chart.data.datasets[0].data = newData;
+            chart.update();
+        } else {
+            alert("O número de rótulos deve corresponder ao número de dados.");
+        }
+    });
+</script>
+</body>
+</html>
